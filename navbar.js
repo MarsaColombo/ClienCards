@@ -48,7 +48,7 @@ const logoProrieties = {
   // UP
   logo.addEventListener("mouseout", () => {
     Object.assign(logo.style, {
-      color: "",
+      color: "black",
     });
   });
   logo.addEventListener("click", () => {
