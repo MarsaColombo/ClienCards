@@ -1,71 +1,59 @@
 // Declaration des variables du main
 let hero = document.createElement("main");
+hero.setAttribute("class", "main");
 let clientContainer = document.createElement("div");
-clientContainer.setAttribute("id", "clientContainer");
-
-let client = document.createElement("div");
-let clientImage = document.createElement("div");
-let image = document.createElement("img");
-let clientInfo = document.createElement("div");
-let nom = document.createElement("span");
-let prenom = document.createElement("span");
-
-// Variables API
+clientContainer.setAttribute("class", "clientContainer");
 
 // Arborescence des elements
 hero.append(clientContainer);
-clientContainer.append(client);
-client.append(clientImage, clientInfo);
-clientImage.append(image);
-clientInfo.append(nom, prenom);
 
-// Definition des variables
-nom.textContent = `Nom : Biaou`;
-prenom.textContent = `Prenom : Aymeric`;
+async function fetchApi() {
+  let userApi = await fetch("https://reqres.in/api/users?per_page=12");
+  let res = await userApi.json();
+  await res.data.forEach((item) => {
+    createClientCard(item);
+  });
+  function createClientCard(user) {
+    // Create a client card element
+    let client = document.createElement("div");
+    client.setAttribute("class", "clientCard");
+    // Set the content of the client card
+    client.innerHTML = `
+    <button class="toogleButton" id="openButton"><ion-icon name="open-outline"></ion-icon></button>
+      <button class="toogleButton" id="closeButton"><ion-icon name="close-outline"></ion-icon></button>
+        <div class="imageSection">
+          <img class="clientImage" src="${user.avatar}" alt="User Avatar">
+        </div>
+        <div class="infoSection">
+        <div class="infoDiv">
+          <h3 class="nomClient">${user.first_name} ${user.last_name}</h3>
+          <a href="mailto:${user.id}">Email : ${user.email}</a>
+          <p>ID : ${user.id}</p>
+        </div>
+          
+    </div>`;
+    // Append the client card to the document body
+    clientContainer.append(client);
 
-// Stylisation
-// Hero
-hero.style.width = "100%";
-hero.style.minHeight = "100vh";
-hero.style.background = "white ";
-hero.style.display = "flex ";
-hero.style.justifyContent = "center ";
-hero.style.alignItems = "center ";
+    // Récupérer les boutons de bascule
+    let openButton = client.querySelector("#openButton");
+    let closeButton = client.querySelector("#closeButton");
 
-// clientContainer
-clientContainer.style.minWidth = "5rem";
-clientContainer.style.height = "75%";
-clientContainer.style.display = "grid";
-clientContainer.style.gridAutoColumns = "center";
-clientContainer.style.gridTemplateColumns = "repeat(1,auto)";
-clientContainer.style.gridAutoRows = "auto";
-clientContainer.style.border = "solid";
-clientContainer.style.padding = "2rem";
-clientContainer.style.margin = "auto";
+    // Ajouter un gestionnaire d'événement pour ouvrir la carte agrandie
+    openButton.addEventListener("click", () => {
+      client.classList.add("enGrand");
+      openButton.style.display = "none";
+      closeButton.style.display = "block";
+    });
 
-//client
-client.style.gridColumn = "1 /span 1";
-client.style.gridRow = "1 /span 1";
+    // Ajouter un gestionnaire d'événement pour fermer la carte agrandie
+    closeButton.addEventListener("click", () => {
+      client.classList.remove("enGrand");
+      closeButton.style.display = "none";
+      openButton.style.display = "block";
+    });
+  }
+}
+fetchApi();
 
-client.style.borderRadius = "25%";
-client.style.padding = "1rem";
-client.style.boxShadow = "17px 19px 27px 1px rgba(0,0,0,0.54)";
-
-// ClientInfo
-clientInfo.style.display = "flex";
-clientInfo.style.flexDirection = "column ";
-clientInfo.style.justifyContent = "center";
-clientInfo.style.alignItems = "center";
-
-// ClientImage
-clientImage.style.display = "flex";
-clientImage.style.justifyContent = "center";
-clientImage.style.alignItems = "center";
-clientImage.style.padding = "0.5rem";
-
-image.src = "./ProfilClient.jpg";
-image.style.width = "5rem";
-image.style.height = "5rem";
-
-// Exportation du fichier
 export default hero;

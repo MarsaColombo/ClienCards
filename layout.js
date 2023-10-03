@@ -13,4 +13,4 @@ body.append(navbar, hero);
 body.style.width = "100%";
 body.style.height = "100%";
 body.style.background =
-  "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(99,99,99,1) 43%, rgba(1,24,52,1) 100%)";
+  "linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
